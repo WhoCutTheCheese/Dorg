@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"description": "The utility bot for The Bot Den",
 	"main": "Main.ts",
-	"type": "module",
 	"scripts": {
 		"start": "ts-node Main.ts"
 	},
