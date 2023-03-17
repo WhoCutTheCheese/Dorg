@@ -26,5 +26,4 @@ client.on("error", (err: Error) => handleError(err));
 mongoose.connection.on("error", (err: Error) => { handleError(err); });
 mongoose.connection.on('connected', () => { Log.debug("Mongoose has connected successfully."); });
 
-
 client.login(config.token);
