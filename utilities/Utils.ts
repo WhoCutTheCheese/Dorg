@@ -1,5 +1,6 @@
-import { EmbedBuilder, WebhookClient } from "discord.js";
+import { APIButtonComponent, ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputApplicationCommandData, ChatInputCommandInteraction, EmbedBuilder, User, WebhookClient } from "discord.js";
 import { Log } from "./Logging";
+const ms = require("ms");
 
 /**
  * Returns the current date an time in a string.
@@ -20,4 +21,46 @@ export function handleError(err: Error): void {
 			{ name: "Error:", value: `\`\`\`${err.message}\`\`\`` }
 		);
 	webhook.send({ embeds: [error], content: "<@&1085378823350141019>" });
+}
+
+
+export async function promptChannel(interaction: ChatInputCommandInteraction, user: User, description: string, title: string): Promise<any> {
+
+	return new Promise(async (resolve, reject) => {
+
+		let row = new ActionRowBuilder<ButtonBuilder>()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId(`cancel.${interaction.user.id}`)
+					.setStyle(ButtonStyle.Danger)
+					.setLabel("Cancel")
+			);
+		const embed = new EmbedBuilder()
+			.setAuthor({ name: title, iconURL: interaction.guild?.iconURL() || undefined })
+			.setDescription(`${description}
+		**Example:** #Channel`);
+		const reply = await interaction.editReply({ components: [row], embeds: [embed] });
+		Promise.race([
+			new Promise(async (resolve, reject) => {
+				const filter = (i: any) => i.user.id === interaction.user.id;
+
+				const collector = reply.createMessageComponentCollector({ filter, time: ms("10m") });
+				collector.on('collect', async (bi: ButtonInteraction) => {
+					const id = bi.customId;
+					if (id == `cancel.${interaction.user.id}`) {
+						row = new ActionRowBuilder<ButtonBuilder>()
+							.addComponents(
+								ButtonBuilder.from(reply.components[0].components[0] as APIButtonComponent).setDisabled(true),
+							);
+						await interaction.editReply({ components: [row] });
+						reject('Prompt canceled.');
+					}
+				});
+			})
+		]).then((c: any) => { resolve(c); })
+			.catch(err => { if (!err) interaction.channel?.send(`Prompt timed out`); reject(err); });
+
+	});
+
+
 }

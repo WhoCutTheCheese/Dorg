@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Interaction, InteractionReplyOptions, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, Interaction, InteractionReplyOptions, PermissionsBitField, SlashCommandBuilder, SlashCommandSubcommandBuilder, SlashCommandSubcommandsOnlyBuilder } from 'discord.js';
 import { promisify } from 'node:util';
 import settings from '../schemas/Settings';
 import { config } from '../utilities/Config';
@@ -146,13 +146,8 @@ export class CommandExecutor extends SlashCommandBuilder {
 				};
 			}
 		}
-
 		// Check base permissions
 		switch (this.#base_permission.Level) {
-			case PermissionLevel.None:
-				return {
-					success: true,
-				};
 			case PermissionLevel.AssistantModerator:
 				if (!interaction.member?.roles.cache.has(roles?.juniorMod!)) {
 					return {
@@ -160,6 +155,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 						content: "You must be Assistant Moderator and up to use this command."
 					};
 				}
+				break;
 			case PermissionLevel.AssistantAdministrator:
 				if (!interaction.member?.roles.cache.has(roles?.assistantAdmin!)) {
 					return {
@@ -167,6 +163,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 						content: "You must be Assistant Administrator and up to use this command."
 					};
 				}
+				break;
 			case PermissionLevel.Moderator:
 				if (!interaction.member?.roles.cache.has(roles?.mod!)) {
 					return {
@@ -174,6 +171,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 						content: "You must be Moderator and up to use this command."
 					};
 				}
+				break;
 			case PermissionLevel.Administrator:
 				if (!interaction.member?.roles.cache.has(roles?.admin!)) {
 					return {
@@ -181,14 +179,27 @@ export class CommandExecutor extends SlashCommandBuilder {
 						content: "You must be Administrator and up to use this command."
 					};
 				}
+				break;
 			case PermissionLevel.Developer:
-				if (!config.devs.includes(interaction.user.id)) {
+				let response = false;
+				for (const dev of config.devs) {
+					if (dev === interaction.user.id) {
+						response = true;
+						break;
+					}
+				}
+				console.log(response);
+				if (response == false) {
 					return {
 						success: false,
-						content: "You must be an RDB developer to use this command."
+						content: "You must be a Dorg developer to use this command."
 					};
 				}
-
+				break;
+			default:
+				return {
+					success: true
+				};
 		}
 
 		// if (!this.#base_permission(interaction)) {
