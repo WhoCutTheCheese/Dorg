@@ -1,5 +1,4 @@
-import { EmbedBuilder, GuildMember, Message } from "discord.js";
-import { client } from "../../../Main";
+import { EmbedBuilder, GuildMember } from "discord.js";
 import { CommandExecutor, PermissionLevel } from "../../../classes/CommandExecutor";
 
 export default new CommandExecutor()
