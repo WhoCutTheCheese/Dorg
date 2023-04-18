@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Interaction, InteractionReplyOptions, PermissionsBitField, SlashCommandBuilder, SlashCommandSubcommandBuilder, SlashCommandSubcommandsOnlyBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, InteractionReplyOptions, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
 import { promisify } from 'node:util';
 import settings from '../schemas/Settings';
 import { config } from '../utilities/Config';
