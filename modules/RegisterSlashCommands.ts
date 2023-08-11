@@ -6,7 +6,8 @@ import fs from "fs";
 import path from "path";
 import { Log } from "../utilities/Logging";
 import { CommandExecutor } from "../classes/CommandExecutor";
-import { handleError } from "../utilities/Utils";
+import { createNewGuildFile, handleError } from "../utilities/Utils";
+import Settings from "../schemas/Settings";
 dotENV.config();
 
 declare module "discord.js" {
@@ -58,12 +59,17 @@ export async function load() {
 	client.on("interactionCreate", async interaction => {
 		if (!interaction.isChatInputCommand()) return;
 		const command = client.slashcommands.get(interaction.commandName);
+		if(interaction.inCachedGuild()) {
+			const settings = await Settings.findOne({
+				guildID: interaction.guild?.id
+			})
+			if(!settings) {
+				await createNewGuildFile(interaction.guild);
+			}
+		}
 
 
 		if (!command) return;
-		// for (const perm of command.perms(interaction)) {
-		//     Log(LogLevel.Debug, `${typeof (perm)}`)
-		// }
 
 		try {
 			const permResult = await command.hasPermission(interaction);

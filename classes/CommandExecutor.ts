@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, InteractionReplyOptions, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, InteractionReplyOptions, PermissionsBitField, Role, SlashCommandBuilder } from 'discord.js';
 import { promisify } from 'node:util';
 import settings from '../schemas/Settings';
 import { config } from '../utilities/Config';
@@ -37,7 +37,7 @@ export enum PermissionLevel {
 	/** Requires the Moderator role. */
 	Moderator,
 	/** Requires the Assistant Administrator role. */
-	AssistantAdministrator,
+	HeadModerator,
 	/** Requires the Administrator role. */
 	Administrator,
 	/** Must be a part of the devs array in config.json. */
@@ -149,15 +149,15 @@ export class CommandExecutor extends SlashCommandBuilder {
 		// Check base permissions
 		switch (this.#base_permission.Level) {
 			case PermissionLevel.AssistantModerator:
-				if (!interaction.member?.roles.cache.has(roles?.juniorMod!)) {
+				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "assistant moderator")) {
 					return {
 						success: false,
 						content: "You must be Assistant Moderator and up to use this command."
 					};
 				}
 				break;
-			case PermissionLevel.AssistantAdministrator:
-				if (!interaction.member?.roles.cache.has(roles?.assistantAdmin!)) {
+			case PermissionLevel.HeadModerator:
+				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "head moderator")) {
 					return {
 						success: false,
 						content: "You must be Assistant Administrator and up to use this command."
@@ -165,7 +165,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 				}
 				break;
 			case PermissionLevel.Moderator:
-				if (!interaction.member?.roles.cache.has(roles?.mod!)) {
+				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "moderator")) {
 					return {
 						success: false,
 						content: "You must be Moderator and up to use this command."
@@ -173,7 +173,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 				}
 				break;
 			case PermissionLevel.Administrator:
-				if (!interaction.member?.roles.cache.has(roles?.admin!)) {
+				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "administrator")) {
 					return {
 						success: false,
 						content: "You must be Administrator and up to use this command."

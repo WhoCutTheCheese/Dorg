@@ -14,6 +14,12 @@ export async function validateConfig() {
 	if (!config.failedEmoji) {
 		Log.warn("You are missing the \"failedEmoji\" argument in config.json. Some emojis may not work.");
 	}
+	if (!config.arrowEmoji) {
+		Log.warn("You are missing the \"arrowEmoji\" argument in config.json. Some emojis may not work.");
+	}
+	if (!config.bulletpointEmoji) {
+		Log.warn("You are missing the \"bulletpointEmoji\" argument in config.json. Some emojis may not work.");
+	}
 	if (!config.devs) {
 		Log.warn("You are missing the \"devs\" array argument in config.json. PermissionLevel.Developer will not function.");
 	}

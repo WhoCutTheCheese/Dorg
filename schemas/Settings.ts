@@ -2,14 +2,9 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
 	guildID: String,
-	juniorMod: String,
-	mod: String,
-	assistantAdmin: String,
-	admin: String,
-	mediaBanned: String,
-	helpBanned: String,
 	modLogChannel: String,
 	suggestionChannel: String,
+	caseCount: Number,
 });
 
 export default mongoose.model("settings", schema);

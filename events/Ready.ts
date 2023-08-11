@@ -9,9 +9,7 @@ export default {
 		Log.info("Dorg is waking up!");
 
 		mongoose.set("strictQuery", true);
-		mongoose.connect(`${config.mongo_uri}`, {
-			keepAlive: true,
-		});
+		mongoose.connect(`${config.mongo_uri}`);
 
 		Log.info("Dorg has awoken and is ready to hunt.");
 	}

@@ -17,13 +17,18 @@ export const client = new Client({
 	]
 });
 
-initializeModules().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully initialized all modules."));
-validateConfig().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully validated the configuration file."));
+async function run() {
+	await initializeModules().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully initialized all modules."));
+	await validateConfig().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully validated the configuration file."));
+	client.login(config.token);
+}
+
+run()
+
+import "./tasks/BanCheck";
 
 process.on('unhandledRejection', (err: Error) => handleError(err));
 process.on('uncaughtException', (err: Error) => handleError(err));
 client.on("error", (err: Error) => handleError(err));
 mongoose.connection.on("error", (err: Error) => { handleError(err); });
 mongoose.connection.on('connected', () => { Log.debug("Mongoose has connected successfully."); });
-
-client.login(config.token);

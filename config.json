@@ -2,6 +2,8 @@
 	"clientID": "880954221707550771",
 	"successEmoji": "<:check:1085364357711536158>",
 	"failedEmoji": "<:denied:1085364673169342534>",
+	"arrowEmoji": "<:arrow:1101249845643186186>",
+	"bulletpointEmoji": "<:blurple_bulletpoint:1139422348357943416>",
 	"devs": [
 		"493453098199547905"
 	]
