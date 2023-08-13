@@ -7,8 +7,11 @@ export default {
 	name: "guildMemberAdd",
 	once: false,
 	async execute(member: GuildMember) {
-		if (member.roles.cache.find((r: Role) => r.name.toLowerCase() === "member")) return;
+		setTimeout(async () => {
+			if (member.roles.cache.find((r: Role) => r.name.toLowerCase() === "member")) return;
 
-		member.roles.add("1139101213690970172")
+			await member.roles.add("1139101213690970172");
+		}, 1000);
+
 	}
 };

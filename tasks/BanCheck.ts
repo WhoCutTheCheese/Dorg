@@ -16,14 +16,17 @@ export async function checkBans() {
 		let guild = await client.guilds.fetch(ban.guildID!).catch(() => { });
 		if (!guild) return;
 
-		await guild.members.unban(user, "Ban expired.");
-
-		await Case.findOneAndUpdate({
+		const theCase = await Case.findOneAndUpdate({
 			guildID: guild.id,
 			caseNumber: ban.caseNumber,
 		}, {
 			active: false
-		})
+		});
+
+		if (theCase?.active == true) return;
+
+		await guild.members.unban(user, "Ban expired.");
+
 
 		await ban.deleteOne(
 			{
@@ -32,7 +35,7 @@ export async function checkBans() {
 				endDate: ban.endDate
 			}
 		);
-	})
+	});
 }
 
 setInterval(checkBans, 1 * 1000); 

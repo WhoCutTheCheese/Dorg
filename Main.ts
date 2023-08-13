@@ -23,9 +23,12 @@ async function run() {
 	client.login(config.token);
 }
 
-run()
+run();
 
 import "./tasks/BanCheck";
+import "./tasks/CaseActiveCheck";
+import "./tasks/VerifiedUnverifiedCheck";
+
 
 process.on('unhandledRejection', (err: Error) => handleError(err));
 process.on('uncaughtException', (err: Error) => handleError(err));
