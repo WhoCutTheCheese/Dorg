@@ -34,18 +34,18 @@ export default new CommandExecutor()
 		const user = interaction.options.getUser("user")
 		const member = interaction.options.getMember("user")
 		const reason = interaction.options.getString("reason")
-		if(!user || !reason) return;
+		if (!user || !reason) return;
 		let length = getLengthFromString(interaction.options.getString("length") || "")
-		if(!length[1]) {
+		if (!length[1]) {
 			length[1] = "Permanent"
 		}
 
-		if(member) {
-			if(interaction.guild.ownerId == member.id || interaction.guild.members.me?.roles.highest.position! <= member.roles.highest.position) {
+		if (member) {
+			if (interaction.guild.ownerId == member.id || interaction.guild.members.me?.roles.highest.position! <= member.roles.highest.position) {
 				interaction.reply({ embeds: [errorEmbed("I am unable to issue a ban to this user.")], ephemeral: true })
 				return;
 			}
-			if(interaction.member.roles.highest.position <= member.roles.highest.position || interaction.user.id == member.id) {
+			if (interaction.member.roles.highest.position <= member.roles.highest.position || interaction.user.id == member.id) {
 				interaction.reply({ embeds: [errorEmbed("You are unable to issue a ban to this user.")], ephemeral: true })
 				return;
 			}
@@ -61,16 +61,19 @@ export default new CommandExecutor()
 			caseType: "BAN",
 			reason: reason,
 			duration: length[1],
+			durationUnix: length[0],
+			active: true,
 			dateIssued: Date.now()
 		})
 		newCase.save().catch((err: Error) => {
 			handleError(err);
 		})
 
-		if(length[0] !== null) {
+		if (length[0] !== null) {
 			const newBans = new Bans({
 				guildID: interaction.guild.id,
 				userID: user.id,
+				caseNumber: caseNumber,
 				endDate: (Math.floor(Date.now() / 1000) + length[0])
 			})
 			newBans.save().catch((err: Error) => {

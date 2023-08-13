@@ -33,7 +33,7 @@ export enum PermissionLevel {
 	/** No permission required to use the command. */
 	None,
 	/** Requires the Assistant Moderator role. */
-	AssistantModerator,
+	JuniorModerator,
 	/** Requires the Moderator role. */
 	Moderator,
 	/** Requires the Assistant Administrator role. */
@@ -148,8 +148,8 @@ export class CommandExecutor extends SlashCommandBuilder {
 		}
 		// Check base permissions
 		switch (this.#base_permission.Level) {
-			case PermissionLevel.AssistantModerator:
-				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "assistant moderator")) {
+			case PermissionLevel.JuniorModerator:
+				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")) {
 					return {
 						success: false,
 						content: "You must be Assistant Moderator and up to use this command."
@@ -188,7 +188,6 @@ export class CommandExecutor extends SlashCommandBuilder {
 						break;
 					}
 				}
-				console.log(response);
 				if (response == false) {
 					return {
 						success: false,

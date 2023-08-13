@@ -9,6 +9,6 @@ export default {
 	async execute(member: GuildMember) {
 		if (member.roles.cache.find((r: Role) => r.name.toLowerCase() === "member")) return;
 
-        member.roles.add("1139101213690970172")
+		member.roles.add("1139101213690970172")
 	}
 };

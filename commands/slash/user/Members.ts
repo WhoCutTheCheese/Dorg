@@ -8,7 +8,7 @@ export default new CommandExecutor()
 	.addNumberOption(opt =>
 		opt.setName("member_count")
 			.setDescription("See how many members we need to reach a goal!")
-			.setRequired(false)	
+			.setRequired(false)
 	)
 	.setBasePermission({
 		Level: PermissionLevel.None,
@@ -29,8 +29,8 @@ export default new CommandExecutor()
 			description = `**${(members - fetchedMembers.size).toLocaleString()}** members until **${members.toLocaleString()}** members!`
 		} else {
 			description = `${config.arrowEmoji} **${totalMembers}** total members
-            ${config.arrowEmoji} **${totalHumans}** total humans
-            ${config.arrowEmoji} **${totalBots}** total bots`
+			${config.arrowEmoji} **${totalHumans}** total humans
+			${config.arrowEmoji} **${totalBots}** total bots`
 		}
 
 		const membersEmbed = new EmbedBuilder()

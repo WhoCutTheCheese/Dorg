@@ -59,11 +59,11 @@ export async function load() {
 	client.on("interactionCreate", async interaction => {
 		if (!interaction.isChatInputCommand()) return;
 		const command = client.slashcommands.get(interaction.commandName);
-		if(interaction.inCachedGuild()) {
+		if (interaction.inCachedGuild()) {
 			const settings = await Settings.findOne({
 				guildID: interaction.guild?.id
 			})
-			if(!settings) {
+			if (!settings) {
 				await createNewGuildFile(interaction.guild);
 			}
 		}

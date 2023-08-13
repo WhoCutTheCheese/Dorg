@@ -72,11 +72,11 @@ export default new CommandExecutor()
 				{ name: "Badges:", value: `${badges}` },
 				{
 					name: "General Information:", value: `**Mention:** <@${user.id}>
-                    **ID:** ${user.id}
-                    **Is Bot:** ${user.bot}
-                    **Highest Role:** ${highestRole}
-                    **Avatar:** [View Here](${user.displayAvatarURL({ size: 512 })})
-                    **Display Name:** ${nickname}`, inline: false
+					**ID:** ${user.id}
+					**Is Bot:** ${user.bot}
+					**Highest Role:** ${highestRole}
+					**Avatar:** [View Here](${user.displayAvatarURL({ size: 512 })})
+					**Display Name:** ${nickname}`, inline: false
 				},
 				{ name: "📆 Created:", value: `<t:${Math.floor(user.createdAt?.getTime()! / 1000)}:D> (<t:${Math.floor(user.createdAt?.getTime()! / 1000)}:R>)`, inline: true },
 				{ name: "📆 Joined:", value: `${joinedAt}`, inline: true }

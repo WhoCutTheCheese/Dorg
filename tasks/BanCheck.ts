@@ -1,5 +1,6 @@
 import Bans from "../schemas/Bans";
 import { client } from "../Main";
+import Case from "../schemas/Case";
 
 export async function checkBans() {
 	let bans = await Bans.find({
@@ -16,6 +17,13 @@ export async function checkBans() {
 		if (!guild) return;
 
 		await guild.members.unban(user, "Ban expired.");
+
+		await Case.findOneAndUpdate({
+			guildID: guild.id,
+			caseNumber: ban.caseNumber,
+		}, {
+			active: false
+		})
 
 		await ban.deleteOne(
 			{
