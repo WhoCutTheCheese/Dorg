@@ -54,7 +54,7 @@ export default new CommandExecutor()
 			caseType: "WARN",
 			reason: reason,
 			duration: expiresAt[1],
-			durationUnix: expiresAt[0],
+			durationUnix: (Math.floor(Date.now() / 1000) + expiresAt[0]!),
 			active: true,
 			dateIssued: Date.now()
 		});

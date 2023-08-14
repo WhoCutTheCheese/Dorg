@@ -4,7 +4,7 @@ import Case from "../schemas/Case";
 
 export async function checkCases() {
 	let cases = await Case.find({
-		durationUnix: { $lt: Date.now() },
+		durationUnix: { $lt: Date.now() / 1000 },
 		active: true
 	});
 

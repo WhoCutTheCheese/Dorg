@@ -4,7 +4,7 @@ import Case from "../schemas/Case";
 
 export async function checkBans() {
 	let bans = await Bans.find({
-		banExpiredUnix: { $lt: Date.now() }
+		banExpiredUnix: { $lt: Date.now() / 1000 }
 	});
 
 	if (!bans || bans.length <= 0) return;

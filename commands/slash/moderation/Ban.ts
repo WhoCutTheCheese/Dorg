@@ -38,9 +38,12 @@ export default new CommandExecutor()
 		const reason = interaction.options.getString("reason");
 		if (!user || !reason) return;
 		let length = getLengthFromString(interaction.options.getString("length") || "");
+		let lengthNum = (Math.floor(Date.now() / 1000) + length[0]!);
 		if (!length[1]) {
 			length[1] = "Permanent";
+			lengthNum = 0;
 		}
+
 
 		if (member) {
 			if (interaction.guild.ownerId == member.id || interaction.guild.members.me?.roles.highest.position! <= member.roles.highest.position) {
@@ -63,7 +66,7 @@ export default new CommandExecutor()
 			caseType: "BAN",
 			reason: reason,
 			duration: length[1],
-			durationUnix: length[0],
+			durationUnix: (Math.floor(Date.now() / 1000) + lengthNum),
 			active: true,
 			dateIssued: Date.now()
 		});

@@ -40,7 +40,6 @@ export default new CommandExecutor()
 		const reason = interaction.options.getString("reason");
 		const timeOpt = interaction.options.getString("length") || "5m";
 		const length = getLengthFromString(timeOpt);
-		console.log(length);
 		if (!length[0]) {
 			interaction.editReply({ embeds: [errorEmbed("Invalid mute length! Ex. `1h, 7d`")] });
 			return;
@@ -69,7 +68,7 @@ export default new CommandExecutor()
 				caseType: "MUTE",
 				reason: reason,
 				duration: length[1],
-				durationUnix: length[0],
+				durationUnix: (Math.floor(Date.now() / 1000) + length[0]),
 				active: true,
 				dateIssued: Date.now()
 			});

@@ -36,8 +36,6 @@ export enum PermissionLevel {
 	JuniorModerator,
 	/** Requires the Moderator role. */
 	Moderator,
-	/** Requires the Assistant Administrator role. */
-	HeadModerator,
 	/** Requires the Administrator role. */
 	Administrator,
 	/** Must be a part of the devs array in config.json. */
@@ -153,14 +151,6 @@ export class CommandExecutor extends SlashCommandBuilder {
 					return {
 						success: false,
 						content: "You must be Assistant Moderator and up to use this command."
-					};
-				}
-				break;
-			case PermissionLevel.HeadModerator:
-				if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "head moderator")?.position! > interaction.member.guild.roles.highest.position) {
-					return {
-						success: false,
-						content: "You must be Assistant Administrator and up to use this command."
 					};
 				}
 				break;

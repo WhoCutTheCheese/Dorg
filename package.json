@@ -17,6 +17,7 @@
 	},
 	"homepage": "https://github.com/WhoCutTheCheese/Dorg#readme",
 	"dependencies": {
+		"@types/lodash": "^4.14.197",
 		"colors": "^1.4.0",
 		"convert": "^4.13.1",
 		"discord.js": "^14.12.1",

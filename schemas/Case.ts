@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
 	duration: String,
 	durationUnix: Number,
 	active: Boolean,
-	dateIssued: String,
+	dateIssued: Number,
 });
 
 export default mongoose.model("case", schema);
