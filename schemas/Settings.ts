@@ -5,6 +5,8 @@ const schema = new mongoose.Schema({
 	modLogChannel: String,
 	suggestionChannel: String,
 	caseCount: Number,
+	ticketCount: Number,
+	suggestionCount: Number,
 });
 
 export default mongoose.model("settings", schema);

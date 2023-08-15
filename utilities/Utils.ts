@@ -17,20 +17,32 @@ export function timeStringNow(): string {
 export function errorEmbed(string: string): EmbedBuilder {
 	const errorEmbed = new EmbedBuilder()
 		.setDescription(`${config.failedEmoji} ${string}`)
-		.setColor("Red")
+		.setColor("Red");
 	return errorEmbed;
 }
 
 export async function incrimentCase(guild: Guild): Promise<number> {
 	const settings = await Settings.findOne({
 		guildID: guild.id
-	})
+	});
 
 	await settings?.updateOne({
 		$inc: { caseCount: 1 }
-	})
+	});
 
 	return settings?.caseCount || 0;
+}
+
+export async function incrimentTicket(guild: Guild): Promise<number> {
+	const settings = await Settings.findOne({
+		guildID: guild.id
+	});
+
+	await settings?.updateOne({
+		$inc: { ticketCount: 1 }
+	});
+
+	return settings?.ticketCount || 0;
 }
 
 export async function sendModLogs(
@@ -51,7 +63,7 @@ export async function sendModLogs(
 	const { guild } = options;
 	const settings = await Settings.findOne({
 		guildID: guild.id
-	})
+	});
 	if (!settings) return;
 
 	let user: User = options.target?.user!;
@@ -76,7 +88,7 @@ export async function sendModLogs(
 	const modLogEmbed = new EmbedBuilder()
 		.setAuthor({ name: embedDetails.title, iconURL: mod.displayAvatarURL() || undefined })
 		.setDescription(`${users} ${theChannel}\n<:clock:1071213725610151987> **Date:** <t:${Math.round(Date.now() / 1000)}:D>\n${action}`)
-		.setColor("Blurple")
+		.setColor("Blurple");
 	const channel = guild?.channels.cache.find((c: any) => c.id === settings.modLogChannel!);
 	if (channel) {
 		if (guild.members.me?.permissionsIn(channel!).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks])) {
@@ -94,11 +106,13 @@ export async function createNewGuildFile(guild: Guild) {
 		guildID: guild.id,
 		modLogChannel: "None",
 		suggestionChannel: "None",
-		caseCount: 0
-	})
+		caseCount: 0,
+		ticketCount: 0,
+		suggestionCount: 0,
+	});
 	newSettings.save().catch((err: Error) => {
 		handleError(err);
-	})
+	});
 }
 
 /**
@@ -117,7 +131,7 @@ export function getLengthFromString(string: string): [number, string] | [null, n
 
 		return [length, lengthString];
 	} catch (err) {
-		return [null, null]
+		return [null, null];
 	}
 }
 
