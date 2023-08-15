@@ -286,7 +286,9 @@ export default {
 						return;
 					});
 					await (interaction.channel as TextChannel).permissionOverwrites.edit(foundTicket.creatorID!, { ViewChannel: false, SendMessages: false, ReadMessageHistory: false });
-
+					for (const user of foundTicket.users) {
+						await (interaction.channel as TextChannel).permissionOverwrites.edit(user, { ViewChannel: false, SendMessages: false, ReadMessageHistory: false });
+					}
 					interaction.editReply({ content: "Ticket closed." });
 
 					break;
