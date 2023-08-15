@@ -42,7 +42,7 @@ export async function incrimentTicket(guild: Guild): Promise<number> {
 		$inc: { ticketCount: 1 }
 	});
 
-	return settings?.ticketCount || 0; weaawdawawdwadw;
+	return settings?.ticketCount || 0;
 }
 
 export async function sendModLogs(
