@@ -15,5 +15,5 @@ export default new CommandExecutor()
 		Level: PermissionLevel.None,
 	})
 	.setExecutor(async (interaction) => {
-
+		interaction.reply({ content: "In the works." });
 	});
