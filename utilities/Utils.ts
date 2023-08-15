@@ -33,6 +33,7 @@ export async function incrimentCase(guild: Guild): Promise<number> {
 	return settings?.caseCount || 0;
 }
 
+
 export async function incrimentTicket(guild: Guild): Promise<number> {
 	const settings = await Settings.findOne({
 		guildID: guild.id
