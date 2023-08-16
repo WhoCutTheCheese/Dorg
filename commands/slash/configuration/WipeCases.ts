@@ -23,9 +23,6 @@ export default new CommandExecutor()
 					.setEmoji("🛑")
 			);
 
-		const settings = await Settings.findOne({
-			guildID: interaction.guild.id,
-		});
 
 		const areYouSureEmbed = new EmbedBuilder()
 			.setTitle("Warning!")
@@ -37,7 +34,7 @@ export default new CommandExecutor()
 		const collector = buttonMessage.createMessageComponentCollector({ time: 15000 });
 
 		collector.on('collect', async (buttonInteraction: ButtonInteraction) => {
-			await interaction.deferReply();
+			await buttonInteraction.deferUpdate();
 			if (buttonInteraction.user.id !== interaction.user.id) {
 				buttonInteraction.reply({ content: "This is not your button!", ephemeral: true });
 				return;
@@ -59,9 +56,7 @@ export default new CommandExecutor()
 					await Settings.findOneAndUpdate({
 						guildID: interaction.guild?.id
 					}, {
-						guildSettings: {
-							totalCases: 0
-						}
+						caseCount: 0
 					});
 					await Case.deleteMany({
 						guildID: interaction.guild?.id
