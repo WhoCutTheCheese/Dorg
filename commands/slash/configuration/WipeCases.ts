@@ -24,6 +24,7 @@ export default new CommandExecutor()
 			);
 
 
+
 		const areYouSureEmbed = new EmbedBuilder()
 			.setTitle("Warning!")
 			.setColor("Blurple")
