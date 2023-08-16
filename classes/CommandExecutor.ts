@@ -155,7 +155,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 				}
 				break;
 			case PermissionLevel.Moderator:
-				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "moderator")) {
+				if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "moderator")?.position! > interaction.member.guild.roles.highest.position) {
 					return {
 						success: false,
 						content: "You must be Moderator and up to use this command."
@@ -163,7 +163,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 				}
 				break;
 			case PermissionLevel.Administrator:
-				if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "administrator")) {
+				if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "administrator")?.position! > interaction.member.guild.roles.highest.position) {
 					return {
 						success: false,
 						content: "You must be Administrator and up to use this command."

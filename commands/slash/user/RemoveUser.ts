@@ -5,8 +5,8 @@ import { errorEmbed } from "../../../utilities/Utils";
 import Tickets from "../../../schemas/Tickets";
 
 export default new CommandExecutor()
-	.setName("adduser")
-	.setDescription("Add a user to a ticket.")
+	.setName("removeuser")
+	.setDescription("Remove users from a ticket.")
 	.addUserOption(opt =>
 		opt
 			.setName("user")
@@ -37,19 +37,22 @@ export default new CommandExecutor()
 		}
 
 		if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! > interaction.member.guild.roles.highest.position && interaction.user.id !== foundTicket.creatorID) {
-			interaction.reply({ embeds: [errorEmbed("You do not have permission to add a user to this ticket.")], ephemeral: true });
-			return;
-		}
-		if (foundTicket.users.includes(user.id)) {
-			interaction.reply({ embeds: [errorEmbed("This user is already added to the ticket. Use `/removeuser` to remove them from the ticket.")], ephemeral: true });
+			interaction.reply({ embeds: [errorEmbed("You do not have permission to remove a user from this ticket.")], ephemeral: true });
 			return;
 		}
 
-		await (interaction.channel as TextChannel).permissionOverwrites.edit(user.id, { ViewChannel: true, SendMessages: true, ReadMessageHistory: true });
+		await (interaction.channel as TextChannel).permissionOverwrites.edit(user.id, { ViewChannel: false, SendMessages: false, ReadMessageHistory: false });
+		const users = foundTicket.users;
+		const usersIndex = users.indexOf(user.id);
+
+		if (usersIndex > -1) {
+			users.splice(usersIndex, 1);
+		}
+
 		await foundTicket.updateOne({
-			$push: { users: user.id }
+			users: users
 		});
 
-		interaction.reply({ content: `<@${user.id}> has been added to the ticket.` });
+		interaction.reply({ content: `<@${user.id}> has been removed to from ticket.` });
 
 	});

@@ -241,9 +241,13 @@ export default {
 
 					const foundTicket = await Tickets.findOne({
 						guildID: interaction.guild.id,
-						channelID: interaction.channel?.id
+						channelID: interaction.channel?.id,
+						status: true
 					});
-					if (!foundTicket) return;
+					if (!foundTicket) {
+						interaction.editReply({ embeds: [errorEmbed("Ticket already closed.")] });
+						return;
+					}
 					await foundTicket.updateOne({
 						closeReason: interaction.fields.getTextInputValue('close_reason') || "No reason found!",
 						status: false

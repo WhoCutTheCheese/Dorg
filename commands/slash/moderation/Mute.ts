@@ -103,7 +103,4 @@ export default new CommandExecutor()
 			handleError(err);
 			await interaction.editReply({ embeds: [errorEmbed(`Something went wrong!\n\n\`${err.message}\``)] });
 		});
-
-
-
 	});
