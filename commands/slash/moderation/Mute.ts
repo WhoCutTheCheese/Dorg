@@ -33,26 +33,24 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
-		await interaction.deferReply();
-
 		const user = interaction.options.getUser("user");
 		const member = interaction.options.getMember("user");
 		const reason = interaction.options.getString("reason");
 		const timeOpt = interaction.options.getString("length") || "5m";
 		const length = getLengthFromString(timeOpt);
 		if (!length[0]) {
-			interaction.editReply({ embeds: [errorEmbed("Invalid mute length! Ex. `1h, 7d`")] });
+			interaction.reply(errorEmbed("Invalid mute length! Ex. `1h, 7d`"));
 			return;
 		}
 		if (!user || !reason) return;
 
 		if (!member) {
-			interaction.editReply({ embeds: [errorEmbed("This user is not in the server!")] });
+			interaction.reply(errorEmbed("This user is not in the server!"));
 			return;
 		}
 
 		if (interaction.member.roles.highest.position <= member.roles.highest.position || interaction.user.id == member.id) {
-			interaction.editReply({ embeds: [errorEmbed("You are unable to issue a warning to this user.")] });
+			interaction.reply(errorEmbed("You are unable to issue a warning to this user."));
 			return;
 		}
 
@@ -86,7 +84,7 @@ export default new CommandExecutor()
 			const mutedEmbed = new EmbedBuilder()
 				.setDescription(`**Case:** #${caseNumber} | **Mod:** ${interaction.user.username} | **Reason:** ${reason} | **Length:** ${length[1]}`)
 				.setColor("Blurple");
-			await interaction.editReply({ content: `${config.arrowEmoji} **${user.username}** has been muted. (**${warns}** warns)`, embeds: [mutedEmbed] });
+			await interaction.reply({ content: `${config.arrowEmoji} **${user.username}** has been muted. (**${warns}** warns)`, embeds: [mutedEmbed] });
 
 			const mutedDM = new EmbedBuilder()
 				.setAuthor({ name: `You have been muted`, iconURL: interaction.guild.iconURL() || undefined })
@@ -101,6 +99,6 @@ export default new CommandExecutor()
 
 		}).catch(async (err: Error) => {
 			handleError(err);
-			await interaction.editReply({ embeds: [errorEmbed(`Something went wrong!\n\n\`${err.message}\``)] });
+			await interaction.reply(errorEmbed(`Something went wrong!\n\n\`${err.message}\``));
 		});
 	});

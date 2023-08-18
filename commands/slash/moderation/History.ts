@@ -55,7 +55,7 @@ export default new CommandExecutor()
 		const histArr = lodash.chunk(arr, 5);
 
 		if (histArr.length == 0) {
-			interaction.reply({ embeds: [errorEmbed("This user does not have any past punishments.")], ephemeral: true });
+			interaction.reply(errorEmbed("This user does not have any past punishments."));
 			return;
 		}
 

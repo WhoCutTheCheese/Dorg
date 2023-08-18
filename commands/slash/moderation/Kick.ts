@@ -25,20 +25,18 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
-		await interaction.deferReply();
-
 		const user = interaction.options.getUser("user");
 		const member = interaction.options.getMember("user");
 		const reason = interaction.options.getString("reason");
 		if (!user || !member || !reason) return;
 
 		if (!member) {
-			interaction.editReply({ embeds: [errorEmbed("This user is not in the server!")] });
+			interaction.reply(errorEmbed("This user is not in the server!"));
 			return;
 		}
 
 		if (interaction.member.roles.highest.position <= member.roles.highest.position || interaction.user.id == member.id) {
-			interaction.editReply({ embeds: [errorEmbed("You are unable to issue a kick to this user.")] });
+			interaction.reply(errorEmbed("You are unable to issue a kick to this user."));
 			return;
 		}
 
@@ -71,7 +69,7 @@ export default new CommandExecutor()
 			const kickEmbed = new EmbedBuilder()
 				.setDescription(`**Case:** #${caseNumber} | **Mod:** ${interaction.user.username} | **Reason:** ${reason}`)
 				.setColor("Blurple");
-			interaction.editReply({ content: `${config.arrowEmoji} **${user.username}** has been kicked. (**${warns}** warns)`, embeds: [kickEmbed] });
+			interaction.reply({ content: `${config.arrowEmoji} **${user.username}** has been kicked. (**${warns}** warns)`, embeds: [kickEmbed] });
 
 			const kickedSuccess = new EmbedBuilder()
 				.setAuthor({ name: `You have been kicked from ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() || undefined })
@@ -87,7 +85,7 @@ export default new CommandExecutor()
 			await sendModLogs({ guild: interaction.guild!, mod: interaction.member!, targetUser: user, action: "Kick" }, { title: "User Kicked", actionInfo: `**Reason:** ${reason}\n> **Case ID:** ${caseNumber}`, channel: interaction.channel || undefined });
 		}).catch(async (err: Error) => {
 			handleError(err);
-			await interaction.editReply({ embeds: [errorEmbed(`Something went wrong!\n\n\`${err.message}\``)] });
+			await interaction.reply(errorEmbed(`Something went wrong!\n\n\`${err.message}\``));
 		});
 
 

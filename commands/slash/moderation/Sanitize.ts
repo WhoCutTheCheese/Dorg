@@ -21,18 +21,16 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
-		await interaction.deferReply({ ephemeral: true });
-
 		const user = interaction.options.getUser("user");
 		const member = interaction.options.getMember("user");
 		if (!member) {
-			interaction.editReply({ embeds: [errorEmbed("This user is not in the guild!")] });
+			interaction.reply(errorEmbed("This user is not in the guild!"));
 			return;
 		}
 		if (!user) return;
 
 		if (interaction.guild?.ownerId === user.id || member.roles.highest.position >= interaction.guild.members.me?.roles.highest.position!) {
-			interaction.editReply({ embeds: [errorEmbed("I am unable to edit this user's nickname!")] });
+			interaction.reply(errorEmbed("I am unable to edit this user's nickname!"));
 			return;
 		}
 
@@ -46,14 +44,14 @@ export default new CommandExecutor()
 
 		member.setNickname(after, `Mod: ${interaction.user.username}`).catch(async (err: Error) => {
 			handleError(err);
-			interaction.editReply({ embeds: [errorEmbed(`An unknown error occurred!`)] });
+			interaction.reply(errorEmbed(`An unknown error occurred!`));
 			return;
 		}).then(async () => {
 
 			const unbannedEmbed = new EmbedBuilder()
 				.setDescription(`**Mod:** ${interaction.user.username}`)
 				.setColor("Blurple");
-			await interaction.editReply({ embeds: [unbannedEmbed], content: `${config.arrowEmoji} **${user.username}** has been sanitized.` });
+			await interaction.reply({ embeds: [unbannedEmbed], content: `${config.arrowEmoji} **${user.username}** has been sanitized.` });
 
 			if (after.startsWith(" ")) after = after.substring(1);
 

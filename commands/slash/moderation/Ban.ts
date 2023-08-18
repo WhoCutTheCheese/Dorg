@@ -31,8 +31,6 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
-		await interaction.deferReply();
-
 		const user = interaction.options.getUser("user");
 		const member = interaction.options.getMember("user");
 		const reason = interaction.options.getString("reason");
@@ -47,11 +45,11 @@ export default new CommandExecutor()
 
 		if (member) {
 			if (interaction.guild.ownerId == member.id || interaction.guild.members.me?.roles.highest.position! <= member.roles.highest.position) {
-				interaction.editReply({ embeds: [errorEmbed("I am unable to issue a ban to this user.")] });
+				interaction.reply(errorEmbed("I am unable to issue a ban to this user."));
 				return;
 			}
 			if (interaction.member.roles.highest.position <= member.roles.highest.position || interaction.user.id == member.id) {
-				interaction.editReply({ embeds: [errorEmbed("You are unable to issue a ban to this user.")] });
+				interaction.reply(errorEmbed("You are unable to issue a ban to this user."));
 				return;
 			}
 		}
@@ -101,7 +99,7 @@ export default new CommandExecutor()
 		const banEmbed = new EmbedBuilder()
 			.setDescription(`**Case:** #${caseNumber} | **Mod:** ${interaction.user.username} | **Reason:** ${reason} | **Duration:** ${length[1]}`)
 			.setColor("Blurple");
-		interaction.editReply({ content: `${config.arrowEmoji} **${user.username}** has been banned. (**${warns}** warns)`, embeds: [banEmbed] });
+		interaction.reply({ content: `${config.arrowEmoji} **${user.username}** has been banned. (**${warns}** warns)`, embeds: [banEmbed] });
 
 		const youAreBanned = new EmbedBuilder()
 			.setAuthor({ name: `You have been banned from ${interaction.guild.name}`, iconURL: interaction.guild.iconURL() || undefined })

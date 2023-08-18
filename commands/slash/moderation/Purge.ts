@@ -23,7 +23,7 @@ export default new CommandExecutor()
 		switch (subCommand) {
 			case "all":
 
-				if (amount < 0) { interaction.reply({ embeds: [errorEmbed("Invalid number!")] }); return; }
+				if (amount < 0) { interaction.reply(errorEmbed("Invalid number!")); return; }
 
 				await deleteMsgs(amount, interaction.member!, interaction, null);
 				break;
@@ -109,7 +109,7 @@ async function deleteMsgs(count: number, member: GuildMember, interaction: ChatI
 	let channel: TextChannel = interaction.channel as TextChannel;
 
 	if (count > 500) {
-		await interaction.reply({ embeds: [errorEmbed(`Purge amount cannot be over 500.`)] });
+		await interaction.reply(errorEmbed(`Purge amount cannot be over 500.`));
 		return;
 	}
 
@@ -138,7 +138,7 @@ async function deleteMsgs(count: number, member: GuildMember, interaction: ChatI
 			await interaction.reply({ embeds: [successEmbed] });
 		} catch (err) {
 			console.log(err);
-			await interaction.reply({ embeds: [errorEmbed(`Something went wrong!\n\n\`CHECK CONSOLE\``)] });
+			await interaction.reply(errorEmbed(`Something went wrong!\n\n\`CHECK CONSOLE\``));
 			return;
 		}
 	} else {
@@ -175,7 +175,7 @@ async function deleteMsgs(count: number, member: GuildMember, interaction: ChatI
 				await channel.bulkDelete(filteredMsgs || 100, true);
 			} catch (err) {
 				console.log(err);
-				await interaction.reply({ embeds: [errorEmbed(`Something went wrong!\n\n\`CHECK CONSOLE\``)] });
+				await interaction.reply(errorEmbed(`Something went wrong!\n\n\`CHECK CONSOLE\``));
 				return;
 			}
 		}
@@ -213,7 +213,7 @@ async function deleteMsgs(count: number, member: GuildMember, interaction: ChatI
 			await interaction.reply({ embeds: [successEmbed] });
 		} catch (err) {
 			console.log(err);
-			await interaction.reply({ embeds: [errorEmbed(`Something went wrong!\n\n\`CHECK CONSOLE\``)] });
+			await interaction.reply(errorEmbed(`Something went wrong!\n\n\`CHECK CONSOLE\``));
 			return;
 		}
 	}

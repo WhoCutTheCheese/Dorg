@@ -25,20 +25,18 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
-		await interaction.deferReply();
-
 		const user = interaction.options.getUser("user");
 		const member = interaction.options.getMember("user");
 		const reason = interaction.options.getString("reason");
 		if (!user || !reason) return;
 
 		if (!member) {
-			interaction.editReply({ embeds: [errorEmbed("This user is not in the server!")] });
+			interaction.reply(errorEmbed("This user is not in the server!"));
 			return;
 		}
 
 		if (interaction.member.roles.highest.position <= member.roles.highest.position || interaction.user.id == member.id) {
-			interaction.editReply({ embeds: [errorEmbed("You are unable to issue a warning to this user.")] });
+			interaction.reply(errorEmbed("You are unable to issue a warning to this user."));
 			return;
 		}
 
@@ -72,7 +70,7 @@ export default new CommandExecutor()
 		const warnEmbed = new EmbedBuilder()
 			.setDescription(`**Case:** #${caseNumber} | **Mod:** ${interaction.user.username} | **Reason:** ${reason}`)
 			.setColor("Blurple");
-		interaction.editReply({ content: `${config.arrowEmoji} **${user.username}** has been warned. (**${warns}** warns)`, embeds: [warnEmbed] });
+		interaction.reply({ content: `${config.arrowEmoji} **${user.username}** has been warned. (**${warns}** warns)`, embeds: [warnEmbed] });
 
 		const warnedDM = new EmbedBuilder()
 			.setAuthor({ name: `You have been warned`, iconURL: interaction.guild.iconURL() || undefined })

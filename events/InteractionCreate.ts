@@ -34,7 +34,7 @@ export default {
 					await interaction.deferReply({ ephemeral: true });
 
 					if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "ticket banned")) {
-						await interaction.editReply({ embeds: [errorEmbed("You are banned from opening tickets.")] });
+						await interaction.editReply(errorEmbed("You are banned from opening tickets."));
 						return;
 					}
 
@@ -46,7 +46,7 @@ export default {
 					if (findTicket) {
 						const ticketChannel = interaction.guild.channels.cache.get(findTicket.channelID!);
 						if (ticketChannel) {
-							await interaction.editReply({ embeds: [errorEmbed("You already have a ticket open.")] });
+							await interaction.editReply(errorEmbed("You already have a ticket open."));
 							return;
 						} else {
 							await findTicket.deleteOne();
@@ -55,7 +55,7 @@ export default {
 
 					let category = interaction.guild.channels.cache.find(c => c.name == "💥 Tickets" && c.type === ChannelType.GuildCategory) as CategoryChannel;
 					if (!category) {
-						await interaction.editReply({ embeds: [errorEmbed("No ticket category found. Please contact an administrator!")] });
+						await interaction.editReply(errorEmbed("No ticket category found. Please contact an administrator!"));
 						return;
 					}
 					const juniorMod = interaction.guild.roles.cache.find(r => r.name === "Junior Moderator");
@@ -87,17 +87,17 @@ export default {
 						reason: `Ticket opened by ${interaction.user.username}.`,
 						parent: category,
 					}).catch(async (err: Error) => {
-						await interaction.editReply({ embeds: [errorEmbed("Unable to create ticket channel! Please try again.")] });
+						await interaction.editReply(errorEmbed("Unable to create ticket channel! Please try again."));
 						return;
 					});
 					if (!newChannel) {
-						await interaction.editReply({ embeds: [errorEmbed("Unable to create ticket channel! Please try again.")] });
+						await interaction.editReply(errorEmbed("Unable to create ticket channel! Please try again."));
 						return;
 					}
 
 					const transcriptPath = `./transcripts/${newChannel.id}`;
 					if (existsSync(transcriptPath)) {
-						await interaction.editReply({ embeds: [errorEmbed(`I had an error with the transcripts! Please contact an administrator with a screenshot of this message. \`T-${ticketNum}\``)] });
+						await interaction.editReply(errorEmbed(`I had an error with the transcripts! Please contact an administrator with a screenshot of this message. \`T-${ticketNum}\``));
 						return;
 					}
 
@@ -143,7 +143,7 @@ export default {
 						status: true
 					});
 					newTicket.save().catch(async (err: Error) => {
-						await interaction.editReply({ embeds: [errorEmbed("No ticket category found. Please contact an administrator!")] });
+						await interaction.editReply(errorEmbed("No ticket category found. Please contact an administrator!"));
 						return;
 					});
 					await interaction.editReply({ content: `Your ticket has been created. <#${newChannel.id}>` });
@@ -169,7 +169,7 @@ export default {
 					await interaction.deferReply({ ephemeral: true });
 
 					if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")) {
-						interaction.editReply({ embeds: [errorEmbed("You must be an Junior Mod to use this!")] });
+						interaction.editReply(errorEmbed("You must be an Junior Mod to use this!"));
 						return;
 					}
 					const foundTicket = await Tickets.findOne({
@@ -201,7 +201,7 @@ export default {
 					await interaction.deferReply({});
 
 					if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")) {
-						interaction.editReply({ embeds: [errorEmbed("You must be an Junior Mod to use this!")] });
+						interaction.editReply(errorEmbed("You must be an Junior Mod to use this!"));
 						return;
 					}
 					await Tickets.findOneAndDelete({
@@ -245,7 +245,7 @@ export default {
 						status: true
 					});
 					if (!foundTicket) {
-						interaction.editReply({ embeds: [errorEmbed("Ticket already closed.")] });
+						interaction.editReply(errorEmbed("Ticket already closed."));
 						return;
 					}
 					await foundTicket.updateOne({
@@ -286,7 +286,7 @@ export default {
 						name: `closed-${interaction.channel.name.split('-')[1]}`
 					}).catch(async (err: Error) => {
 						handleError(err);
-						await interaction.editReply({ embeds: [errorEmbed(`An error occurred!\n\`${err.name}\``)] });
+						await interaction.editReply(errorEmbed(`An error occurred!\n\`${err.name}\``));
 						return;
 					});
 					await (interaction.channel as TextChannel).permissionOverwrites.edit(foundTicket.creatorID!, { ViewChannel: false, SendMessages: false, ReadMessageHistory: false });

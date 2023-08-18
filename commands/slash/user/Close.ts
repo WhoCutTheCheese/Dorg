@@ -18,12 +18,12 @@ export default new CommandExecutor()
 			status: true,
 		});
 		if (!foundTicket) {
-			interaction.reply({ embeds: [errorEmbed("This channel is not a valid ticket.")], ephemeral: true });
+			interaction.reply(errorEmbed("This channel is not a valid ticket."));
 			return;
 		}
 
 		if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! > interaction.member.guild.roles.highest.position && interaction.user.id !== foundTicket.creatorID) {
-			interaction.reply({ embeds: [errorEmbed("You do not have permission to close this ticket.")], ephemeral: true });
+			interaction.reply(errorEmbed("You do not have permission to close this ticket."));
 			return;
 		}
 

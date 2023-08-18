@@ -1,8 +1,9 @@
-import { APIButtonComponent, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, ChatInputApplicationCommandData, ChatInputCommandInteraction, EmbedBuilder, Guild, GuildMember, PermissionsBitField, TextChannel, User, WebhookClient, embedLength } from "discord.js";
+import { APIButtonComponent, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, ChatInputApplicationCommandData, ChatInputCommandInteraction, EmbedBuilder, Guild, GuildMember, InteractionReplyOptions, PermissionsBitField, TextChannel, User, WebhookClient, embedLength } from "discord.js";
 import { Log } from "./Logging";
 import { convertMany } from "convert";
 import { config } from "./Config";
 import Settings from "../schemas/Settings";
+import { EmbedType, MessageResponse } from "../classes/MessageResponse";
 const ms = require("ms");
 
 /**
@@ -14,10 +15,16 @@ export function timeStringNow(): string {
 	return `${now.getUTCDate().toString().padStart(2, "0")}-${(now.getUTCMonth() + 1).toString().padStart(2, "0")}-${now.getUTCFullYear().toString().padStart(4, "0")} ${now.getUTCHours().toString().padStart(2, "0")}:${now.getUTCMinutes().toString().padStart(2, "0")}:${now.getUTCSeconds().toString().padStart(2, "0")}:${now.getUTCMilliseconds().toString().padStart(3, "0")}`;
 }
 
-export function errorEmbed(string: string): EmbedBuilder {
-	const errorEmbed = new EmbedBuilder()
-		.setDescription(`${config.failedEmoji} ${string}`)
-		.setColor("Red");
+export function errorEmbed(string: string): InteractionReplyOptions {
+	const errorEmbed = new MessageResponse()
+		.addEmbeds([
+			{
+				type: EmbedType.Error,
+				description: `${config.failedEmoji} ${string}`
+			}
+		])
+		.setEphemeral(true)
+		.build();
 	return errorEmbed;
 }
 
@@ -31,6 +38,18 @@ export async function incrimentCase(guild: Guild): Promise<number> {
 	});
 
 	return settings?.caseCount || 0;
+}
+
+export async function incrimentSuggestion(guild: Guild): Promise<number> {
+	const settings = await Settings.findOne({
+		guildID: guild.id
+	});
+
+	await settings?.updateOne({
+		$inc: { suggestionCount: 1 }
+	});
+
+	return settings?.suggestionCount || 0;
 }
 
 

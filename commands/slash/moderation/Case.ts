@@ -28,7 +28,7 @@ export default new CommandExecutor()
 			caseNumber: caseNum
 		});
 		if (!foundCase) {
-			interaction.reply({ embeds: [errorEmbed("No case found!")], ephemeral: true });
+			interaction.reply(errorEmbed("No case found!"));
 			return;
 		}
 

@@ -22,7 +22,7 @@ export default new CommandExecutor()
 		const user = interaction.options.getUser("user");
 		const member = interaction.options.getMember("user");
 		if (!member || !user) {
-			interaction.reply({ embeds: [errorEmbed("This user is not in the server!")], ephemeral: true });
+			interaction.reply(errorEmbed("This user is not in the server!"));
 			return;
 		}
 
@@ -32,12 +32,12 @@ export default new CommandExecutor()
 			status: true,
 		});
 		if (!foundTicket) {
-			interaction.reply({ embeds: [errorEmbed("This channel is not a valid ticket.")], ephemeral: true });
+			interaction.reply(errorEmbed("This channel is not a valid ticket."));
 			return;
 		}
 
 		if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! > interaction.member.guild.roles.highest.position && interaction.user.id !== foundTicket.creatorID) {
-			interaction.reply({ embeds: [errorEmbed("You do not have permission to remove a user from this ticket.")], ephemeral: true });
+			interaction.reply(errorEmbed("You do not have permission to remove a user from this ticket."));
 			return;
 		}
 

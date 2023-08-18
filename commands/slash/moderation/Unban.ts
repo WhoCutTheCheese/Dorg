@@ -26,14 +26,12 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
-		await interaction.deferReply();
-
 		const user = interaction.options.getUser("user");
 		const reason = interaction.options.getString("reason");
 		if (!user || !reason) return;
 
 		if (!(await interaction.guild.bans.fetch()).get(user.id)) {
-			interaction.editReply({ embeds: [errorEmbed("This user is not banned!")] });
+			interaction.reply(errorEmbed("This user is not banned!"));
 			return;
 		}
 
@@ -73,12 +71,12 @@ export default new CommandExecutor()
 			const unbannedEmbed = new EmbedBuilder()
 				.setDescription(`**Case:** #${caseNumber} | **Mod:** ${interaction.user.username} | **Reason:** ${reason}`)
 				.setColor("Blurple");
-			await interaction.editReply({ embeds: [unbannedEmbed], content: `${config.arrowEmoji} **${user.username}** has been unbanned.` });
+			await interaction.reply({ embeds: [unbannedEmbed], content: `${config.arrowEmoji} **${user.username}** has been unbanned.` });
 
 			await sendModLogs({ guild: interaction.guild!, mod: interaction.member!, targetUser: user, action: "Unban" }, { title: "User Unbanned", actionInfo: `**Reason:** ${reason}\n> **Case ID:** ${caseNumber}`, channel: interaction.channel || undefined });
 		}).catch(async (err: Error) => {
 			handleError(err);
-			await interaction.editReply({ embeds: [errorEmbed(`Something went wrong!\n\n\`${err.message}\``)] });
+			await interaction.reply(errorEmbed(`Something went wrong!\n\n\`${err.message}\``));
 		});
 
 	});

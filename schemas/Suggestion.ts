@@ -3,11 +3,9 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema({
 	guildID: String,
 	creatorID: String,
-	users: Array,
+	suggestionID: Number,
+	messageID: String,
 	channelID: String,
-	claimedID: String,
-	closeReason: String,
-	status: Boolean,
 });
 
-export default mongoose.model("ticket", schema);
+export default mongoose.model("suggestion", schema);
