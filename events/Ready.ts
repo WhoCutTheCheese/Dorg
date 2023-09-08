@@ -16,8 +16,8 @@ export default {
 			type: ActivityType.Custom,
 		});
 
-		//mongoose.set("strictQuery", true);
-		mongoose.connect(`${config.mongo_uri}`);
+		mongoose.set("strictQuery", true);
+		await mongoose.connect(`${config.mongo_uri}`);
 
 		Log.info("Dorg has awoken and is ready to hunt.");
 	}
