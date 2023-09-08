@@ -18,7 +18,6 @@ export const client = new Client({
 });
 
 async function run() {
-	await mongoose.connect(`${config.mongo_uri}`);
 	await initializeModules().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully initialized all modules."));
 	await validateConfig().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully validated the configuration file."));
 	client.login(config.token);
