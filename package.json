@@ -20,7 +20,7 @@
 		"@types/lodash": "^4.14.197",
 		"colors": "^1.4.0",
 		"convert": "^4.13.1",
-		"discord.js": "^14.12.1",
+		"discord.js": "^14.13.0",
 		"dotenv": "^16.0.3",
 		"lodash": "^4.17.21",
 		"mongoose": "^7.4.2",

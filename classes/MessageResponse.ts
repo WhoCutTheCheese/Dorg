@@ -15,7 +15,7 @@ interface EmbedOptions {
 interface ButtonOptions {
 	label: string,
 	customID?: string,
-	emoji?: APIMessageComponentEmoji,
+	emoji?: APIMessageComponentEmoji | string,
 	style: ButtonStyle,
 	url?: string,
 	disabled?: boolean;

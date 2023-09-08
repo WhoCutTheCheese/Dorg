@@ -2,7 +2,8 @@ import { CommandExecutor, PermissionLevel } from "../../../classes/CommandExecut
 import { errorEmbed, incrimentSuggestion } from "../../../utilities/Utils";
 import Suggestion from "../../../schemas/Suggestion";
 import { EmbedType, MessageResponse } from "../../../classes/MessageResponse";
-import { BaseMessageOptions, TextChannel } from "discord.js";
+import { BaseMessageOptions, Role, TextChannel } from "discord.js";
+import { config } from "../../../utilities/Config";
 
 export default new CommandExecutor()
 	.setName("suggest")
@@ -25,6 +26,10 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
+		if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "suggestion banned")) {
+			interaction.reply(errorEmbed("You are banned from using suggestion channels."));
+			return;
+		}
 		const suggChannel = await interaction.guild.channels.fetch("1081103059091984444") as TextChannel;
 		const suggestion = interaction.options.getString("suggestion");
 		if (!suggestion) {
@@ -68,7 +73,7 @@ export default new CommandExecutor()
 			.addEmbeds([
 				{
 					type: EmbedType.Success,
-					description: `Your suggestion has been sent! ${message.url}`
+					description: `${config.successEmoji} Your suggestion has been sent! ${message.url}`
 				}
 			])
 			.setEphemeral(true)
@@ -82,6 +87,8 @@ export default new CommandExecutor()
 			suggestionID: suggestionNumber,
 			messageID: message.id,
 			channelID: suggChannel.id,
+			suggestionsText: suggestion,
+			imageURL: image?.url,
 		});
 		newSugg.save().catch();
 	});

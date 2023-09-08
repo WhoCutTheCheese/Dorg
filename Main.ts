@@ -28,6 +28,7 @@ run();
 import "./tasks/BanCheck";
 import "./tasks/CaseActiveCheck";
 import "./tasks/VerifiedUnverifiedCheck";
+import "./tasks/RoleBansCheck";
 
 
 process.on('unhandledRejection', (err: Error) => handleError(err));

@@ -35,11 +35,11 @@ export default new CommandExecutor()
 		const collector = buttonMessage.createMessageComponentCollector({ time: 15000 });
 
 		collector.on('collect', async (buttonInteraction: ButtonInteraction) => {
-			await buttonInteraction.deferUpdate();
 			if (buttonInteraction.user.id !== interaction.user.id) {
 				buttonInteraction.reply({ content: "This is not your button!", ephemeral: true });
 				return;
 			}
+			await buttonInteraction.deferUpdate();
 			if (buttonInteraction.customId == "CONFIRM") {
 				if (buttonInteraction.user.id === interaction.user.id) {
 					row = new ActionRowBuilder<ButtonBuilder>()
@@ -57,7 +57,7 @@ export default new CommandExecutor()
 					await Settings.findOneAndUpdate({
 						guildID: interaction.guild?.id
 					}, {
-						caseCount: 0
+						caseCount: 1
 					});
 					await Case.deleteMany({
 						guildID: interaction.guild?.id

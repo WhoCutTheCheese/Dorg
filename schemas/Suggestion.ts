@@ -6,6 +6,8 @@ const schema = new mongoose.Schema({
 	suggestionID: Number,
 	messageID: String,
 	channelID: String,
+	suggestionsText: String,
+	imageURL: String,
 });
 
 export default mongoose.model("suggestion", schema);

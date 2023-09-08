@@ -147,7 +147,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 		// Check base permissions
 		switch (this.#base_permission.Level) {
 			case PermissionLevel.JuniorModerator:
-				if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! > interaction.member.guild.roles.highest.position) {
+				if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! >= interaction.member.guild.roles.highest.position) {
 					return {
 						success: false,
 						content: "You must be Assistant Moderator and up to use this command."
@@ -155,7 +155,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 				}
 				break;
 			case PermissionLevel.Moderator:
-				if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "moderator")?.position! > interaction.member.guild.roles.highest.position) {
+				if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "moderator")?.position! >= interaction.member.guild.roles.highest.position) {
 					return {
 						success: false,
 						content: "You must be Moderator and up to use this command."
@@ -163,7 +163,7 @@ export class CommandExecutor extends SlashCommandBuilder {
 				}
 				break;
 			case PermissionLevel.Administrator:
-				if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "administrator")?.position! > interaction.member.guild.roles.highest.position) {
+				if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "administrator")?.position! >= interaction.member.guild.roles.highest.position) {
 					return {
 						success: false,
 						content: "You must be Administrator and up to use this command."

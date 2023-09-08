@@ -25,7 +25,7 @@ export default new CommandExecutor()
 		const cases = await Case.find({
 			guildID: interaction.guild.id,
 			userID: user.id
-		});
+		}).sort({ dateIssued: "descending" });
 		let arr: string[] = [];
 
 		for (const foundCase of cases) {

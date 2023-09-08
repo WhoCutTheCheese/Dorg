@@ -36,7 +36,7 @@ export default new CommandExecutor()
 		const reason = interaction.options.getString("reason");
 		if (!user || !reason) return;
 		let length = getLengthFromString(interaction.options.getString("length") || "");
-		let lengthNum = (Math.floor(Date.now() / 1000) + length[0]!);
+		let lengthNum = (Math.floor(Date.now() / 1000) + length[0]!) || 0;
 		if (!length[1]) {
 			length[1] = "Permanent";
 			lengthNum = 0;
@@ -64,7 +64,7 @@ export default new CommandExecutor()
 			caseType: "BAN",
 			reason: reason,
 			duration: length[1],
-			durationUnix: (Math.floor(Date.now() / 1000) + lengthNum),
+			durationUnix: lengthNum,
 			active: true,
 			dateIssued: Date.now()
 		});
@@ -77,7 +77,7 @@ export default new CommandExecutor()
 				guildID: interaction.guild.id,
 				userID: user.id,
 				caseNumber: caseNumber,
-				endDate: (Math.floor(Date.now() / 1000) + length[0])
+				endDate: lengthNum
 			});
 			newBans.save().catch((err: Error) => {
 				handleError(err);

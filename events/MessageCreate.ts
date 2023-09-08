@@ -1,6 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import { appendFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
+import RoleBans from "../schemas/RoleBans";
 
 function addSpacesToEachLine(str: string) {
 	return str.split("\n").map(line => "    " + line).join("\n");
@@ -36,6 +37,17 @@ export default {
 	name: "messageCreate",
 	once: false,
 	async execute(message: Message) {
+		const foundBan = await RoleBans.find({
+			guildID: message.guild?.id,
+			userID: message.author.id,
+		});
+		if (foundBan) {
+			for (const file of foundBan) {
+				if (!message.member?.roles.cache.has(file.roleID!)) {
+					message.member?.roles.add(file.roleID!).catch(() => { });
+				}
+			}
+		}
 		if (!(message.channel instanceof TextChannel)) return;
 		if (message.channel.parentId !== "1081353828722557028") return;
 		const ticketID = message.channel.id;
