@@ -10,11 +10,11 @@ export default {
 	async execute() {
 		Log.info("Dorg is waking up!");
 
-		client.user?.setActivity({
-			name: "🌌 Watching the stars...",
-			//state: "Watching",
-			type: ActivityType.Custom,
-		});
+		// client.user?.setActivity({
+		// 	name: "🌌 Watching the stars...",
+		// 	//state: "Watching",
+		// 	type: ActivityType.Custom,
+		// });
 
 		mongoose.set("strictQuery", true);
 		mongoose.connect(`${config.mongo_uri}`);
