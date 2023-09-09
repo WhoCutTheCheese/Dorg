@@ -22,7 +22,9 @@ async function run() {
 	await validateConfig().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully validated the configuration file."));
 	client.login(config.token);
 }
-
+setInterval(() => {
+	console.log(`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}`);
+}, 1 * 1000);
 run();
 
 process.on('unhandledRejection', (err: Error) => handleError(err));
@@ -31,8 +33,10 @@ client.on("error", (err: Error) => handleError(err));
 mongoose.connection.on("error", (err: Error) => { handleError(err); process.exit(500); });
 mongoose.connection.on('connected', () => { Log.debug("Mongoose has connected successfully."); });
 
-import "./tasks/BanCheck";
-import "./tasks/CaseActiveCheck";
-import "./tasks/VerifiedUnverifiedCheck";
-import "./tasks/RoleBansCheck";
+setTimeout(async () => {
+	import("./tasks/BanCheck");
+	import("./tasks/CaseActiveCheck");
+	import("./tasks/VerifiedUnverifiedCheck");
+	import("./tasks/RoleBansCheck");
+}, 60 * 1000);
 

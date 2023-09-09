@@ -28,14 +28,14 @@ export async function load() {
 
 		for (const file of commandFiles) {
 
-			Log.debug(`[Get] | Slash Command | ${file}`);
+			//Log.debug(`[Get] | Slash Command | ${file}`);
 
 			const command = (await import(`${commandPath}/${folder}/${file}`)).default as CommandExecutor;
 
 			client.slashcommands.set(command.name, command);
 			client.slashcommandsArray.push(command.toJSON() as never);
 
-			Log.debug(`[Loaded]  | Slash Command | ${file}`);
+			//Log.debug(`[Loaded]  | Slash Command | ${file}`);
 		}
 	}
 	let clientId = config.clientID;
@@ -62,7 +62,7 @@ export async function load() {
 		if (interaction.inCachedGuild()) {
 			const settings = await Settings.findOne({
 				guildID: interaction.guild?.id
-			})
+			});
 			if (!settings) {
 				await createNewGuildFile(interaction.guild);
 			}
