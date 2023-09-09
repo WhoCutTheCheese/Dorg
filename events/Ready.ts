@@ -16,7 +16,7 @@ export default {
 			type: ActivityType.Custom,
 		});
 
-		mongoose.connect(`mongodb+srv://SmartSky:OU9JjQZV0lfNiXrk@booleanstorage.3ud4r.mongodb.net/Dorg?retryWrites=true&w=majority`);
+		mongoose.connect(`${process.env.MONGO_URI}`);
 
 		Log.info("Dorg has awoken and is ready to hunt.");
 	}
