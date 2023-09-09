@@ -25,14 +25,14 @@ async function run() {
 
 run();
 
-import "./tasks/BanCheck";
-import "./tasks/CaseActiveCheck";
-import "./tasks/VerifiedUnverifiedCheck";
-import "./tasks/RoleBansCheck";
-
-
 process.on('unhandledRejection', (err: Error) => handleError(err));
 process.on('uncaughtException', (err: Error) => handleError(err));
 client.on("error", (err: Error) => handleError(err));
 mongoose.connection.on("error", (err: Error) => { handleError(err); process.exit(500); });
 mongoose.connection.on('connected', () => { Log.debug("Mongoose has connected successfully."); });
+
+import "./tasks/BanCheck";
+import "./tasks/CaseActiveCheck";
+import "./tasks/VerifiedUnverifiedCheck";
+import "./tasks/RoleBansCheck";
+

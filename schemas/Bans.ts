@@ -7,4 +7,4 @@ const schema = new mongoose.Schema({
 	endDate: Number
 });
 
-export default mongoose.model("bans", schema);
+export default mongoose.model("ban", schema);

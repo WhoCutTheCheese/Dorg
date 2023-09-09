@@ -9,4 +9,4 @@ const schema = new mongoose.Schema({
 	suggestionCount: Number,
 });
 
-export default mongoose.model("settings", schema);
+export default mongoose.model("setting", schema);

@@ -9,4 +9,4 @@ const schema = new mongoose.Schema({
 	endDate: Number
 });
 
-export default mongoose.model("rolebans", schema);
+export default mongoose.model("roleban", schema);

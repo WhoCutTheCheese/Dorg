@@ -11,5 +11,5 @@ export default new CommandExecutor()
 	})
 	.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 	.setExecutor(async (interaction) => {
-		console.log(Date.now() / 1000);
+		interaction.reply(`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}`);
 	});
