@@ -32,7 +32,7 @@ export default new CommandExecutor()
 			if (member.nickname) {
 				nickname = member.nickname;
 			} else {
-				nickname = user.username;
+				nickname = user.globalName;
 			}
 			joinedAt = `<t:${Math.floor(member.joinedAt?.getTime()! / 1000)}:D> (<t:${Math.floor(member.joinedAt?.getTime()! / 1000)}:R>)`;
 			highestRole = `<@&${member.roles.highest.id}> (${member.roles.highest.position})`;
@@ -46,7 +46,7 @@ export default new CommandExecutor()
 		let badges: string[] = [];
 		for (const badge of fetchedFlags) {
 			if (fetchedFlags.length == 0) {
-				badges.push("None");
+				badges.push("None...");
 			}
 			if (badge == "Staff") badges.push(" <:staff:996115760579620974>");
 			if (badge == "Partner") badges.push(" <:PartneredServerOwner:1044190723198697493>");
@@ -61,6 +61,9 @@ export default new CommandExecutor()
 			if (badge == "VerifiedDeveloper") badges.push(" <:EarlyVerifiedBotDeveloper:1044190725237129216>");
 			if (badge == "CertifiedModerator") badges.push(" <:CertifiedModerator:1044190723798478870>");
 			if (badge == "ActiveDeveloper") badges.push(" <:ActiveDeveloper:1044190726327631942>");
+		}
+		if (badges.length <= 0) {
+			badges.push("None...");
 		}
 
 		let userInfoEmbed = new EmbedBuilder()
