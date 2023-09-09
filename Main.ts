@@ -22,9 +22,7 @@ async function run() {
 	await validateConfig().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully validated the configuration file."));
 	client.login(config.token);
 }
-setInterval(() => {
-	console.log(`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}`);
-}, 1 * 1000);
+
 run();
 
 process.on('unhandledRejection', (err: Error) => handleError(err));
