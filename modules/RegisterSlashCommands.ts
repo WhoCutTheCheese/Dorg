@@ -29,13 +29,14 @@ export async function load() {
 		for (const file of commandFiles) {
 
 			//Log.debug(`[Get] | Slash Command | ${file}`);
+			setTimeout(async () => {
+				const command = (await import(`${commandPath}/${folder}/${file}`)).default as CommandExecutor;
 
-			const command = (await import(`${commandPath}/${folder}/${file}`)).default as CommandExecutor;
+				client.slashcommands.set(command.name, command);
+				client.slashcommandsArray.push(command.toJSON() as never);
+				Log.debug(`[Loaded]  | Slash Command | ${file}`);
+			}, 500);
 
-			client.slashcommands.set(command.name, command);
-			client.slashcommandsArray.push(command.toJSON() as never);
-
-			//Log.debug(`[Loaded]  | Slash Command | ${file}`);
 		}
 	}
 	let clientId = config.clientID;

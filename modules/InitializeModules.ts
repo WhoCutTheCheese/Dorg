@@ -5,7 +5,5 @@ import { load as RegisterSlashCommands } from "./RegisterSlashCommands";
 
 export async function initializeModules(): Promise<void> {
 	RegisterEvents().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully registered events."));
-	setTimeout(async () => {
-		RegisterSlashCommands().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully registered slash commands."));
-	}, 10000);
+	RegisterSlashCommands().catch((err: Error) => handleError(err)).then(() => Log.info("Successfully registered slash commands."));
 }
