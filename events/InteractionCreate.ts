@@ -131,7 +131,7 @@ export default {
 							If you opened this ticket by mistake, please leave a short response and close the ticket.`)
 						.setTimestamp()
 						.setFooter({ text: "Ticket transcripts are saved permanently." });
-					newChannel.send({ content: `<@${interaction.user.id}> <@&1081104149111918662> https://nohello.net`, embeds: [ticketEmbed], components: [ticketRow] });
+					newChannel.send({ content: `<@${interaction.user.id}> <@&1150908413136609381> https://nohello.net`, embeds: [ticketEmbed], components: [ticketRow] });
 
 					const newTicket = new Tickets({
 						guildID: interaction.guild.id,
