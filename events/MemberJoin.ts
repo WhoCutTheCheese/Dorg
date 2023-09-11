@@ -21,6 +21,12 @@ export default {
 						}
 					}
 				}
+				const fetchedMembers = await member.guild.members.fetch();
+				const humans = fetchedMembers.filter((member: GuildMember) => !member.user.bot).size;
+				if (humans < 100) {
+					const role = member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() == "early supporter🌲");
+					if (role) await member.roles.add(role);
+				}
 				return;
 			}
 			await member.roles.add("1139101213690970172");

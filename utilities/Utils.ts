@@ -1,4 +1,4 @@
-import { APIButtonComponent, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, ChatInputApplicationCommandData, ChatInputCommandInteraction, EmbedBuilder, Guild, GuildMember, InteractionReplyOptions, PermissionsBitField, TextChannel, User, WebhookClient, embedLength } from "discord.js";
+import { APIButtonComponent, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, ChatInputApplicationCommandData, ChatInputCommandInteraction, EmbedBuilder, Guild, GuildBasedChannel, GuildMember, InteractionReplyOptions, PermissionsBitField, TextChannel, User, WebhookClient, embedLength } from "discord.js";
 import { Log } from "./Logging";
 import { convertMany } from "convert";
 import { config } from "./Config";
@@ -109,7 +109,7 @@ export async function sendModLogs(
 		.setAuthor({ name: embedDetails.title, iconURL: mod.displayAvatarURL() || undefined })
 		.setDescription(`${users} ${theChannel}\n<:clock:1071213725610151987> **Date:** <t:${Math.round(Date.now() / 1000)}:D>\n${action}`)
 		.setColor("Blurple");
-	const channel = guild?.channels.cache.find((c: any) => c.id === settings.modLogChannel!);
+	const channel = guild?.channels.cache.find((c: GuildBasedChannel) => c.name.toLowerCase() === "mod-logs");
 	if (channel) {
 		if (guild.members.me?.permissionsIn(channel!).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks])) {
 			if (options.attachments) {
