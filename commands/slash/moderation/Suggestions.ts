@@ -13,7 +13,7 @@ export default new CommandExecutor()
 	.setDescription("Manage suggestions.")
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 	.setBasePermission({
-		Level: PermissionLevel.Administrator,
+		Level: PermissionLevel.Moderator,
 	})
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
