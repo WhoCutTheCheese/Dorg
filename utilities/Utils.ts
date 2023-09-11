@@ -203,5 +203,4 @@ export function handleError(err: Error): void {
 			{ name: "Error:", value: `\`\`\`${err.message}\`\`\`` }
 		);
 	webhook.send({ embeds: [error] });
-	console.error(err);
 }
