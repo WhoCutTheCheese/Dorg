@@ -18,7 +18,6 @@ declare module "discord.js" {
 }
 
 export async function load() {
-
 	client.slashcommands = new Collection();
 	client.slashcommandsArray = [];
 	const commandPath = path.join(__dirname, "..", "commands", "slash");
@@ -27,15 +26,15 @@ export async function load() {
 		const commandFiles = fs.readdirSync(`${commandPath}/${folder}`).filter(file => file.endsWith(".ts"));
 
 		for (const file of commandFiles) {
-
+			setTimeout(async () => { }, 500);
 			//Log.debug(`[Get] | Slash Command | ${file}`);
 			const command = (await import(`${commandPath}/${folder}/${file}`)).default as CommandExecutor;
 
 			client.slashcommands.set(command.name, command);
 			client.slashcommandsArray.push(command.toJSON() as never);
-			setTimeout(async () => {
-				Log.debug(`[Loaded]  | Slash Command | ${file}`);
-			}, 500);
+
+			Log.debug(`[Loaded]  | Slash Command | ${file}`);
+
 
 		}
 	}
