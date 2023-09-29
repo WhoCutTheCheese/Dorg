@@ -26,7 +26,7 @@ export async function load() {
 		const commandFiles = fs.readdirSync(`${commandPath}/${folder}`).filter(file => file.endsWith(".ts"));
 
 		for (const file of commandFiles) {
-			setTimeout(async () => { }, 500);
+			setTimeout(async () => { }, 1000);
 			//Log.debug(`[Get] | Slash Command | ${file}`);
 			const command = (await import(`${commandPath}/${folder}/${file}`)).default as CommandExecutor;
 
