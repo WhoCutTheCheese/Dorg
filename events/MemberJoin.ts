@@ -29,7 +29,7 @@ export default {
 				}
 				const channel = member.guild?.channels.cache.find((c: GuildBasedChannel) => c.name.toLowerCase() === "gates");
 				await (member.guild.channels.cache.find((c: any) => c.id === channel?.id) as TextChannel).send({
-					content: `**Welcome <@${member.id}>!**\nMake sure to check out <#1080360678340177960>, we now have \`#${humans.toLocaleString()}\` thanks to you <3`
+					content: `**Welcome <@${member.id}>!**\nMake sure to check out <#1080360678340177960>, we now have \`#${humans.toLocaleString()}\` members thanks to you <3`
 				});
 				return;
 			}
