@@ -26,7 +26,7 @@ export default new CommandExecutor()
 	.setExecutor(async (interaction) => {
 		if (!interaction.inCachedGuild()) { interaction.reply({ content: "You must be inside a cached guild to use this command!", ephemeral: true }); return; }
 
-		if (interaction.member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() === "suggestion banned")) {
+		if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "suggestion banned")) {
 			interaction.reply(errorEmbed("You are banned from using suggestion channels."));
 			return;
 		}
@@ -68,6 +68,11 @@ export default new CommandExecutor()
 		message.react("👍");
 		message.react("🟨");
 		message.react("👎");
+		message.startThread({
+			name: `Suggestion #${suggestionNumber}`,
+			autoArchiveDuration: 60,
+			reason: `${suggestion}`,
+		});
 
 		const success = new MessageResponse()
 			.addEmbeds([
