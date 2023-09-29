@@ -1,4 +1,4 @@
-import { GuildMember, Role } from "discord.js";
+import { GuildBasedChannel, GuildMember, Role, TextChannel } from "discord.js";
 import { config } from "../utilities/Config";
 import { Log } from "../utilities/Logging";
 import mongoose from "mongoose";
@@ -27,6 +27,11 @@ export default {
 					const role = member.guild.roles.cache.find((r: Role) => r.name.toLowerCase() == "early supporter🌲");
 					if (role) await member.roles.add(role);
 				}
+				const channel = member.guild?.channels.cache.find((c: GuildBasedChannel) => c.name.toLowerCase() === "gates");
+				await (member.guild.channels.cache.find((c: any) => c.id === channel?.id) as TextChannel).send({
+					content: `**Welcome <@${member.id}!**
+				Make sure to check out #welcome, we now have \`#${humans.toLocaleString}\` thanks to you <3`
+				});
 				return;
 			}
 			await member.roles.add("1139101213690970172");
