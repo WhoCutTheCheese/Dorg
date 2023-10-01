@@ -319,7 +319,7 @@ async function getTicketTranscriptByID(id: string) {
 }
 
 async function transcriptString(ticketname: string, ticket_id: string, interaction: Interaction, closerID: string) {
-	const scriptsChannel = await client.channels.fetch("1143766178683179091").catch((err: Error) => { Log.error(err); handleError(err); });
+	const scriptsChannel = await client.channels.fetch("1081353700586565652").catch((err: Error) => { Log.error(err); handleError(err); });
 	if (!scriptsChannel) return;
 
 	const foundTicket = await Tickets.findOne({
