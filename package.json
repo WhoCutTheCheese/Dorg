@@ -1,0 +1,22 @@
+{
+  "name": "dorg",
+  "version": "2.0.0",
+  "description": "The utility bot for The Bot Den.",
+  "main": "dist/Main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WhoCutTheCheese/Dorg.git"
+  },
+  "author": "tehcheese",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WhoCutTheCheese/Dorg/issues"
+  },
+  "homepage": "https://github.com/WhoCutTheCheese/Dorg#readme",
+  "dependencies": {
+    "typescript": "^5.2.2"
+  }
+}
