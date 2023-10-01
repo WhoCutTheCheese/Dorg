@@ -3,8 +3,8 @@ import { errorEmbed, handleError, incrimentTicket } from "../utilities/GenUtils"
 import Tickets from "../schemas/Tickets";
 import { Log } from "../utilities/Logging";
 import { existsSync, mkdirSync, writeFileSync, readdirSync, readFileSync, rmSync } from "fs";
-import path from "path";
 import { escapeRegExp } from "lodash";
+import path from "path";
 import { client } from "../Main";
 import { config } from "../utilities/Config";
 
@@ -95,11 +95,13 @@ export default {
 						return;
 					}
 
-					const transcriptPath = `./transcripts/${newChannel.id}`;
-					if (existsSync(transcriptPath)) {
-						await interaction.editReply(errorEmbed(`I had an error with the transcripts! Please contact an administrator with a screenshot of this message. \`T-${ticketNum}\``));
-						return;
-					}
+					// const transcriptPath1 = path.join(__dirname, "..", "transcripts");
+					// if (existsSync(transcriptPath1)) {
+					// 	await interaction.editReply(errorEmbed(`I had an error with the transcripts! Please contact an administrator with a screenshot of this message. \`T-${ticketNum}\``));
+					// 	return;
+					// }
+					const transcriptPath = path.join(__dirname, "..", "transcripts", `${newChannel.id}`);
+
 
 					mkdirSync(transcriptPath);
 
@@ -112,7 +114,7 @@ export default {
 					writeFileSync(`${transcriptPath}/ticket_meta.json`, JSON.stringify(meta));
 					writeFileSync(`${transcriptPath}/ticket_transcript.md`, "");
 					writeFileSync(`${transcriptPath}/ticket_transcript.txt`, "");
-					mkdirSync(`${transcriptPath}/media`);
+					mkdirSync(path.join(__dirname, "..", "transcripts", `${newChannel.id}`, "media"));
 
 					const ticketRow = new ActionRowBuilder<ButtonBuilder>()
 						.addComponents(
@@ -168,7 +170,7 @@ export default {
 				case "log_transcript":
 					await interaction.deferReply({ ephemeral: true });
 
-					if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")) {
+					if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! <= interaction.member.roles.highest.position) {
 						interaction.editReply(errorEmbed("You must be an Junior Mod to use this!"));
 						return;
 					}
@@ -200,7 +202,7 @@ export default {
 				case "delete_ticket":
 					await interaction.deferReply({});
 
-					if (!interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")) {
+					if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! <= interaction.member.roles.highest.position) {
 						interaction.editReply(errorEmbed("You must be an Junior Mod to use this!"));
 						return;
 					}
@@ -228,7 +230,7 @@ export default {
 
 					await interaction.editReply({ content: "Ticket file deleted, deleting channel soon." });
 					setTimeout(async () => {
-						rmSync('./transcripts/' + interaction.channel?.id, { recursive: true, force: true });
+						rmSync(path.join(__dirname, "..", "transcripts", `${interaction.channel?.id}`), { recursive: true, force: true });
 						await interaction.channel?.delete("Ticket closed");
 					}, 10000);
 			}
@@ -305,9 +307,9 @@ export default {
 
 async function getTicketTranscriptByID(id: string) {
 	try {
-		const media = readdirSync(`./transcripts/${id}/media`);
-		const md = readFileSync(`./transcripts/${id}/ticket_transcript.md`);
-		const txt = readFileSync(`./transcripts/${id}/ticket_transcript.txt`);
+		const media = readdirSync(path.join(__dirname, "..", "transcripts", `${id}`, "media"));
+		const md = readFileSync(path.join(__dirname, "..", "transcripts", `${id}`, "ticket_transcript.md"));
+		const txt = readFileSync(path.join(__dirname, "..", "transcripts", `${id}`, "ticket_transcript.txt"));
 		return { media, md, txt };
 	} catch (err) {
 		Log.error(err);
@@ -317,7 +319,7 @@ async function getTicketTranscriptByID(id: string) {
 }
 
 async function transcriptString(ticketname: string, ticket_id: string, interaction: Interaction, closerID: string) {
-	const scriptsChannel = await client.channels.fetch("1081353700586565652").catch((err: Error) => { Log.error(err); handleError(err); });
+	const scriptsChannel = await client.channels.fetch("1143766178683179091").catch((err: Error) => { Log.error(err); handleError(err); });
 	if (!scriptsChannel) return;
 
 	const foundTicket = await Tickets.findOne({
@@ -344,22 +346,29 @@ async function transcriptString(ticketname: string, ticket_id: string, interacti
 			s += `From ${msg.author.tag} (${msg.author.id})\n    ` + (msg.content ?? "") + "\n";
 		}
 		const buffer = Buffer.from(escapeRegExp(s), 'utf-8');
-		await (scriptsChannel as TextChannel).send({
+		const msg = await (scriptsChannel as TextChannel).send({
 			embeds: [transcriptEmbed],
+		});
+		const thread = await msg.startThread({
+			name: `Ticket #${(interaction.channel as TextChannel)?.name.split('-')[1]}`,
+			autoArchiveDuration: 60,
+			reason: `Transcript`,
+		});
+		thread.send({
 			files: [
 				{ attachment: buffer, name: ticketname + ".txt" }
 			]
 		});
 		return;
 	}
-	await (scriptsChannel as TextChannel).send({
+	const msg = await (scriptsChannel as TextChannel).send({
 		embeds: [transcriptEmbed],
 		files: [
 			{ attachment: results.md, name: ticketname + '.md' },
 			{ attachment: results.txt, name: ticketname + '.txt' }
 		]
 	});
-	const thread = await (scriptsChannel as TextChannel).threads.create({
+	const thread = await msg.startThread({
 		name: `Ticket-${(interaction.channel as TextChannel)?.name.split('-')[1]} Media`,
 		autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
 		reason: 'Ticket Media'
@@ -368,7 +377,7 @@ async function transcriptString(ticketname: string, ticket_id: string, interacti
 		await thread.send({
 			content: mediaFile,
 			files: [
-				`./transcripts/${ticket_id}/media/${mediaFile}`
+				path.join(__dirname, "..", "transcripts", `${ticket_id}`, "media", `${mediaFile}`)
 			]
 		});
 	}

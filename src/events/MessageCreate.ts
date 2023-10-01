@@ -1,6 +1,6 @@
-import { Message, TextChannel } from "discord.js";
+import { CategoryChannel, ChannelType, Message, TextChannel } from "discord.js";
 import { appendFileSync, writeFileSync } from "fs";
-import { resolve } from "path";
+import path, { resolve } from "path";
 import RoleBans from "../schemas/RoleBans";
 
 function addSpacesToEachLine(str: string) {
@@ -20,7 +20,7 @@ function generateUniqueCharacters() {
 async function downloadAttachment(url: string, path: string, name: string) {
 	const response = await fetch(url);
 	const buffer = Buffer.from(await response.arrayBuffer());
-	console.log(`${path}/media/${name}`);
+	//console.log(`${path}/media/${name}`);
 	writeFileSync(`${path}/media/${name}`, buffer);
 	return resolve(`${path}/media/${name}`);
 }
@@ -49,9 +49,9 @@ export default {
 			}
 		}
 		if (!(message.channel instanceof TextChannel)) return;
-		if (message.channel.parentId !== "1081353828722557028") return;
+		if (message.channel.parentId !== (message.guild?.channels.cache.find(c => c.name == "💥 Tickets" && c.type === ChannelType.GuildCategory) as CategoryChannel).id) return;
 		const ticketID = message.channel.id;
-		const ticketPath = `./transcripts/${ticketID}`;
+		const ticketPath = path.join(__dirname, "..", "transcripts", `${ticketID}`);
 
 		appendFileSync(`${ticketPath}/ticket_transcript.md`, `\n\nFrom [${message.author.tag}](https://www.discord.com/users/${message.author.id}) at \`${message.createdAt}\``);
 		appendFileSync(`${ticketPath}/ticket_transcript.txt`, `\n${message.author.tag} (${message.author.id}) at ${message.createdAt}:`);
