@@ -1,2 +1,2 @@
-worker: tsc
+build: tsc
 worker: node dist/Main.js
