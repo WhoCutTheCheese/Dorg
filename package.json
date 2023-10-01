@@ -4,7 +4,7 @@
   "description": "The utility bot for The Bot Den.",
   "main": "dist/Main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx tsc && node dist/Main.js"
   },
   "repository": {
     "type": "git",

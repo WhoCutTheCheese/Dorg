@@ -1,2 +1,1 @@
-release: npx tsc
-worker: node dist/Main.js
+worker: npm start
