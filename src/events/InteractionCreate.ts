@@ -170,7 +170,7 @@ export default {
 				case "log_transcript":
 					await interaction.deferReply({ ephemeral: true });
 
-					if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! <= interaction.member.roles.highest.position) {
+					if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! > interaction.member.roles.highest.position) {
 						interaction.editReply(errorEmbed("You must be an Junior Mod to use this!"));
 						return;
 					}
@@ -202,7 +202,7 @@ export default {
 				case "delete_ticket":
 					await interaction.deferReply({});
 
-					if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! <= interaction.member.roles.highest.position) {
+					if (interaction.member.roles.cache.find((r: Role) => r.name.toLowerCase() === "junior moderator")?.position! > interaction.member.roles.highest.position) {
 						interaction.editReply(errorEmbed("You must be an Junior Mod to use this!"));
 						return;
 					}
