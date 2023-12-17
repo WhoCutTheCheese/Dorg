@@ -6,9 +6,13 @@ import { EmbedType, MessageResponse } from "../classes/MessageResponse";
 import { config } from "./Config";
 import { convertMany } from "convert";
 
+/**
+ * The error handling function. Just sends a webhook thing
+ * @param err Enter a valid error
+ */
 export function handleError(err: Error): void {
 	Log.error("Uh oh! Dorg has encountered an error.\n\n" + err.message + "\n" + err.stack);
-	const webhook = new WebhookClient({ url: "https://discord.com/api/webhooks/1085378962546491432/Tr8OuPsXEjyqEIF7N_d3CpbGRab_v3BhugmOhZlP5KrPZpnNtD0B1ZAe7jVre0bAFUTo" });
+	const webhook = new WebhookClient({ url: "https://discord.com/api/webhooks/1165711387125895178/zM8o6XJRPn-dLwnPpSdOHuR4-4dHGxjw9NXOrwKSZsHmxoOz5sBtNdHaaGQ2HqW88CGC" });
 	const error = new EmbedBuilder()
 		.setTitle("Dorg Error!")
 		.setColor("Red")
@@ -27,6 +31,10 @@ export function timeStringNow(): string {
 	return `${now.getUTCDate().toString().padStart(2, "0")}-${(now.getUTCMonth() + 1).toString().padStart(2, "0")}-${now.getUTCFullYear().toString().padStart(4, "0")} ${now.getUTCHours().toString().padStart(2, "0")}:${now.getUTCMinutes().toString().padStart(2, "0")}:${now.getUTCSeconds().toString().padStart(2, "0")}:${now.getUTCMilliseconds().toString().padStart(3, "0")}`;
 }
 
+/**
+ * Creates a new guild settings file with MongoDB using Mongoose
+ * @param guild A guild type
+ */
 export async function createNewGuildFile(guild: Guild) {
 	const newSettings = new Settings({
 		guildID: guild.id,
@@ -41,6 +49,11 @@ export async function createNewGuildFile(guild: Guild) {
 	});
 }
 
+/**
+ * Just sends a error embed that is ephemeral
+ * @param string The string for the error message
+ * @returns InteractionReplyOptions
+ */
 export function errorEmbed(string: string): InteractionReplyOptions {
 	const errorEmbed = new MessageResponse()
 		.addEmbeds([
@@ -54,6 +67,11 @@ export function errorEmbed(string: string): InteractionReplyOptions {
 	return errorEmbed;
 }
 
+/**
+ * Incriments the case count for punishments.
+ * @param guild The guild where the case number is incrimented
+ * @returns Promise<number>
+ */
 export async function incrimentCase(guild: Guild): Promise<number> {
 	const settings = await Settings.findOne({
 		guildID: guild.id
@@ -66,6 +84,11 @@ export async function incrimentCase(guild: Guild): Promise<number> {
 	return settings?.caseCount || 0;
 }
 
+/**
+ * Incriments the suggestion count for... yk suggestions
+ * @param guild The guild where the suggestion number is incrimented
+ * @returns Promise<number>
+ */
 export async function incrimentSuggestion(guild: Guild): Promise<number> {
 	const settings = await Settings.findOne({
 		guildID: guild.id
@@ -78,7 +101,11 @@ export async function incrimentSuggestion(guild: Guild): Promise<number> {
 	return settings?.suggestionCount || 0;
 }
 
-
+/**
+ * Incriments the ticket count for tickets
+ * @param guild The guild where the ticket number is incrimented
+ * @returns Promise<number>
+ */
 export async function incrimentTicket(guild: Guild): Promise<number> {
 	const settings = await Settings.findOne({
 		guildID: guild.id
@@ -91,6 +118,12 @@ export async function incrimentTicket(guild: Guild): Promise<number> {
 	return settings?.ticketCount || 0;
 }
 
+/**
+ * Send the modlog embed
+ * @param options All the options for the modlogs
+ * @param embedDetails The details for the modlog embed
+ * @returns Promise<void>
+ */
 export async function sendModLogs(
 	options: {
 		guild: Guild;

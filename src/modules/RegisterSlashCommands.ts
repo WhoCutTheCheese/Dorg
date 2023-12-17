@@ -18,28 +18,31 @@ declare module "discord.js" {
 }
 
 export async function load() {
+	// Creates the slash command collection, for REST
 	client.slashcommands = new Collection();
 	client.slashcommandsArray = [];
+	// Get the commands path, and folders and loops through the folders getting the files
 	const commandPath = path.join(__dirname, "..", "commands", "slash");
 	const commandFolders = fs.readdirSync(commandPath);
 	for (const folder of commandFolders) {
 		const commandFiles = fs.readdirSync(`${commandPath}/${folder}`).filter(file => file.endsWith(".js"));
 
 		for (const file of commandFiles) {
-			//setTimeout(async () => { }, 1000);
-			//Log.debug(`[Get] | Slash Command | ${file}`);
+			// Importing the command as the custom CommandExecutor class
 			const command = (await import(`${commandPath}/${folder}/${file}`)).default as CommandExecutor;
 
+			// Adding it to the collection and array for REST
 			client.slashcommands.set(command.name, command);
 			client.slashcommandsArray.push(command.toJSON() as never);
 
-			Log.debug(`[Loaded]  | Slash Command | ${file}`);
+			//Log.debug(`[Loaded]  | Slash Command | ${file}`);
 
 
 		}
 	}
 	let clientId = config.clientID;
 
+	// Putting it all into REST for slash commands
 	const rest = new REST({ version: '10' }).setToken(process.env.TOKEN!);
 
 	(async () => {
@@ -56,6 +59,7 @@ export async function load() {
 		}
 	})();
 
+	// Actually executing the command code, while also ensuring there is a guild file
 	client.on("interactionCreate", async interaction => {
 		if (!interaction.isChatInputCommand()) return;
 		const command = client.slashcommands.get(interaction.commandName);

@@ -49,7 +49,7 @@ export default {
 			}
 		}
 		if (!(message.channel instanceof TextChannel)) return;
-		if (message.channel.parentId !== (message.guild?.channels.cache.find(c => c.name == "💥 Tickets" && c.type === ChannelType.GuildCategory) as CategoryChannel).id) return;
+		if (message.channel.parentId !== (message.guild?.channels.cache.find(c => c.name.toLowerCase() == "tickets" && c.type === ChannelType.GuildCategory) as CategoryChannel).id) return;
 		const ticketID = message.channel.id;
 		const ticketPath = path.join(__dirname, "..", "transcripts", `${ticketID}`);
 

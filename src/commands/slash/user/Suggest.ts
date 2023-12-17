@@ -30,7 +30,7 @@ export default new CommandExecutor()
 			interaction.reply(errorEmbed("You are banned from using suggestion channels."));
 			return;
 		}
-		const suggChannel = await interaction.guild.channels.fetch("1081103059091984444") as TextChannel;
+		const suggChannel = interaction.guild!.channels.cache.find(c => c.name.toLowerCase() == "suggestions") as TextChannel;
 		const suggestion = interaction.options.getString("suggestion");
 		if (!suggestion) {
 			interaction.reply(errorEmbed("Invalid suggestion."));

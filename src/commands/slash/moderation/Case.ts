@@ -1,7 +1,7 @@
-import { EmbedBuilder, Message, PermissionFlagsBits } from "discord.js";
+import { EmbedBuilder, PermissionFlagsBits } from "discord.js";
 import { client } from "../../../Main";
 import { CommandExecutor, PermissionLevel } from "../../../classes/CommandExecutor";
-import { errorEmbed, getLengthFromString, handleError, incrimentCase, sendModLogs } from "../../../utilities/GenUtils";
+import { errorEmbed, handleError } from "../../../utilities/GenUtils";
 import Case from "../../../schemas/Case";
 import { config } from "../../../utilities/Config";
 

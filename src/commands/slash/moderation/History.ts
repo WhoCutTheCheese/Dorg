@@ -10,7 +10,7 @@ export default new CommandExecutor()
 	.addUserOption(opt =>
 		opt.setName("user")
 			.setDescription("Select the user you would like to view.")
-			.setRequired(true)
+			.setRequired(false)
 	)
 	.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 	.setBasePermission({

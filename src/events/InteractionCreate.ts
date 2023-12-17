@@ -53,7 +53,7 @@ export default {
 						}
 					}
 
-					let category = interaction.guild.channels.cache.find(c => c.name == "💥 Tickets" && c.type === ChannelType.GuildCategory) as CategoryChannel;
+					let category = interaction.guild.channels.cache.find(c => c.name.toLowerCase() == "tickets" && c.type === ChannelType.GuildCategory) as CategoryChannel;
 					if (!category) {
 						await interaction.editReply(errorEmbed("No ticket category found. Please contact an administrator!"));
 						return;
